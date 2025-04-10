@@ -1443,6 +1443,75 @@ class NewsBot:
                 task.add_done_callback(self._background_tasks.discard)
             else:
                 await callback_query.message.reply(f"⚠️ Источник @{source} не найден в вашем списке.")
+                
+        # Обработка кнопок настроек
+        elif data == "toggle_analysis":
+            # Включение/выключение анализа трендов
+            self.include_analysis = not self.include_analysis
+            status = "включен" if self.include_analysis else "отключен"
+            await callback_query.answer(f"Анализ трендов {status}")
+            
+            # Обновляем меню настроек
+            await self.settings(callback_query.message)
+            
+        elif data == "set_count_menu":
+            # Меню изменения количества новостей
+            await callback_query.answer("Введите количество новостей")
+            await state.set_state(UserStates.waiting_for_count)
+            await callback_query.message.answer(
+                "🔢 Введите количество новостей для дайджеста (от 1 до 50):"
+            )
+            
+        elif data == "set_frequency_menu":
+            # Меню изменения частоты обновления
+            await callback_query.answer("Введите частоту обновления в часах")
+            await state.set_state(UserStates.waiting_for_frequency)
+            await callback_query.message.answer(
+                "🕒 Введите частоту обновления дайджеста в часах (от 1 до 168):"
+            )
+            
+        elif data == "set_style_menu":
+            # Меню изменения стиля дайджеста
+            await callback_query.answer("Выберите стиль дайджеста")
+            
+            # Создаем клавиатуру с доступными стилями
+            style_emojis = {
+                DigestStyle.STANDARD: "📰",
+                DigestStyle.COMPACT: "📝",
+                DigestStyle.MEDIA: "📱",
+                DigestStyle.CARDS: "🗂️",
+                DigestStyle.ANALYTICS: "📊",
+                DigestStyle.SOCIAL: "📣"
+            }
+            
+            keyboard = []
+            for style in DigestStyle:
+                keyboard.append([InlineKeyboardButton(
+                    text=f"{style_emojis.get(style, '🔹')} {style.value}", 
+                    callback_data=f"style_{style.value}"
+                )])
+            
+            reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
+            
+            await callback_query.message.answer(
+                "🎨 Выберите стиль дайджеста:",
+                reply_markup=reply_markup
+            )
+            
+        elif data.startswith("style_"):
+            # Установка выбранного стиля дайджеста
+            style_name = data.split("_", 1)[1]
+            
+            # Проверяем, существует ли такой стиль
+            try:
+                style = DigestStyle(style_name)
+                self.current_style = style
+                await callback_query.answer(f"Установлен стиль: {style_name}")
+                
+                # Обновляем меню настроек
+                await self.settings(callback_query.message)
+            except ValueError:
+                await callback_query.answer("Неизвестный стиль дайджеста")
 
     async def add_source_menu(self, message: Message, state: FSMContext):
         """Меню добавления источника"""
