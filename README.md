@@ -68,9 +68,9 @@
 git clone https://github.com/Saveliy12/technostrelka_summ.git
 ```
 
-2. Перейти в скачанную папку (название_папки):
+2. Перейти в скачанную папку:
 ```bash
-cd папка
+cd technostrelka_summ
 ```
 
 3.  Сборка контейнера:
