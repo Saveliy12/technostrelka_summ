@@ -1,0 +1,23 @@
+{
+  "users": {
+    "7477768148": {
+      "sources": [
+        "finanz_ru",
+        "rbc_economics",
+        "profinance_ru",
+        "vestifin"
+      ]
+    }
+  },
+  "default_sources": [
+    "finanz_ru",
+    "rbc_economics",
+    "profinance_ru",
+    "vestifin",
+    "banksta",
+    "cbrstocks",
+    "centralbank_russia",
+    "multievan",
+    "prostoecon"
+  ]
+}
