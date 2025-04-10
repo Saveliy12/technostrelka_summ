@@ -780,7 +780,7 @@ class DigestGenerator:
 === {{ category }} ===
 {% for item in items %}
 ┌─────────────────────────────┐
-│ {{ item.title }} {% if item.importance %} [{{ "❗" * item.importance }}]{% endif %}
+│ {{ item.title }} {% if item.importance and item.importance|int > 0 %}[{{ "❗" * (item.importance|int) }}]{% endif %}
 │ 
 │ {{ item.description }}
 │ {% if item.sentiment == "positive" %}📈 Позитивно{% elif item.sentiment == "negative" %}📉 Негативно{% else %}📊 Нейтрально{% endif %}
