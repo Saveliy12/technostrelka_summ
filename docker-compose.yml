@@ -12,4 +12,28 @@ services:
     env_file:
       - .env
     environment:
-      - TZ=Europe/Moscow 
+      - TZ=Europe/Moscow
+      - MONGODB_URI=mongodb://mongodb:27017/eco_news_bot
+    networks:
+      - app_network
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app_network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge 
