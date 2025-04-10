@@ -76,7 +76,7 @@ cd technostrelka_summ
 3.  Сборка контейнера:
 
 ```bash
-make
+docker-compose up -d --build
 ```
 4. Перейти в бота:  [@tbank_summarizator_bot](https://t.me/tbank_summarizator_bot)
 
