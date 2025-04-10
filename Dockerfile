@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 8000
 
 # Команда запуска приложения
-CMD ["python", "main.py"] 
+CMD ["python", "bot.py"] 
