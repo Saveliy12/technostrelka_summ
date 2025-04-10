@@ -7,8 +7,10 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
+      - "5000:5000"
     volumes:
       - ./data:/app/data
+      - ./logs:/app/logs
     env_file:
       - .env
     environment:
@@ -29,6 +31,8 @@ services:
     networks:
       - app_network
     restart: unless-stopped
+    # Инициализация базы данных
+    command: mongod --logpath=/var/log/mongodb/mongod.log
 
 volumes:
   mongodb_data:
